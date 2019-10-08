@@ -17,7 +17,12 @@
 /** @file Instruction.cpp
  * @author Gav Wood <i@gavwood.com>
  * @date 2014
- */
+ 
+* -Modified for NonFallBack
+ * -by Eun-Sun Cho <eschough@cnu.ac.kr>
+ * -date 2018.8.30 for NonFallback
+ * -date 2019.3.19 for StartFallback,EndFallback
+ * -date 2019.3.20 for Change NonFallback to NonFallbackOn, Add NonFallbackO*/
 
 #include <libevmasm/Instruction.h>
 
@@ -59,6 +64,10 @@ std::map<std::string, Instruction> const dev::eth::c_instructions =
 	{ "MULMOD", Instruction::MULMOD },
 	{ "SIGNEXTEND", Instruction::SIGNEXTEND },
 	{ "KECCAK256", Instruction::KECCAK256 },
+	{ "NONFALLBACKON", Instruction::NONFALLBACKON }, /* Eun-Sun Cho 2018.8.30 */
+	{ "NONALLBACKOFF", Instruction::NONFALLBACKOFF }, /* Eun-Sun Cho 2019.3.20 */
+	{ "STARTFALLBACK", Instruction::STARTFALLBACK }, /* Eun-Sun Cho 2019.3.19 */
+	{ "ENDFALLBACK", Instruction::ENDFALLBACK },	 /* Eun-Sun Cho 2019.3.19 */
 	{ "ADDRESS", Instruction::ADDRESS },
 	{ "BALANCE", Instruction::BALANCE },
 	{ "ORIGIN", Instruction::ORIGIN },
@@ -205,6 +214,10 @@ static std::map<Instruction, InstructionInfo> const c_instructionInfo =
 	{ Instruction::MULMOD,		{ "MULMOD",			0, 3, 1, false, Tier::Mid } },
 	{ Instruction::SIGNEXTEND,	{ "SIGNEXTEND",		0, 2, 1, false, Tier::Low } },
 	{ Instruction::KECCAK256,	{ "KECCAK256",			0, 2, 1, true, Tier::Special } },
+	{ Instruction::NONFALLBACKON,	{ "NONFALLBACKON",			0, 0, 0, true, Tier::Zero } }, /* Eun-Sun Cho 2018.8.30 */
+	{ Instruction::NONFALLBACKOFF,	{ "NONFALLBACKOFF",			0, 0, 0, true, Tier::Zero } }, /* Eun-Sun Cho 2019.3.20 */
+	{ Instruction::STARTFALLBACK,	{ "STARTFALLBACK",			0, 0, 0, true, Tier::Zero } }, /* Eun-Sun Cho 2019.3.19 */
+	{ Instruction::ENDFALLBACK,	{ "ENDFALLBACK",			0, 0, 0, true, Tier::Zero } }, /* Eun-Sun Cho 2019.3.19 */
 	{ Instruction::ADDRESS,		{ "ADDRESS",		0, 0, 1, false, Tier::Base } },
 	{ Instruction::BALANCE,		{ "BALANCE",		0, 1, 1, false, Tier::Balance } },
 	{ Instruction::ORIGIN,		{ "ORIGIN",			0, 0, 1, false, Tier::Base } },

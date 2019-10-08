@@ -18,6 +18,11 @@
  * @author Christian <c@ethdev.com>
  * @date 2014
  * Utilities for the solidity compiler.
+ * Eun-Sun Cho
+ * 2018.8.30 for NonFallback
+ * 2019.3.19 for StartFallback, EndFallback
+ * 2019.3.20 Change NonFallback NonFallback On and Add NonFallback Off
+ 
  */
 
 #pragma once
@@ -158,6 +163,17 @@ public:
 	CompilerContext& appendJump(eth::AssemblyItem::JumpType _jumpType = eth::AssemblyItem::JumpType::Ordinary);
 	/// Appends an INVALID instruction
 	CompilerContext& appendInvalid();
+	
+	/// Appends an SetNonFallBack instruction Eun-Sun Cho 2018.8.30, 2019.3.20
+	CompilerContext& appendNonFallBackOn();
+	/// Appends an SetNonFallBack instruction Eun-Sun Cho 2019.3.20
+	CompilerContext& appendNonFallBackOff();
+	/// Appends an SetNonFallBack instruction Eun-Sun Cho 2019.3.19
+	CompilerContext& appendStartFallBack();
+	/// Appends an SetNonFallBack instruction Eun-Sun Cho 2019.3.19
+	CompilerContext& appendEndFallBack();
+
+
 	/// Appends a conditional INVALID instruction
 	CompilerContext& appendConditionalInvalid();
 	/// Appends a REVERT(0, 0) call

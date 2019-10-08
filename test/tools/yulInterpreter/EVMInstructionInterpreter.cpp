@@ -176,6 +176,16 @@ u256 EVMInstructionInterpreter::eval(
 		uint64_t size = uint64_t(arg[1] & uint64_t(-1));
 		return u256(keccak256(readMemory(offset, size)));
 	}
+	//Sooyeon LEE <djm02309@gmail.com>
+	//add instruction SETNONFALLBACK It might need to modified
+	case Instruction::NONFALLBACKON:
+		return 0;
+	case Instruction::NONFALLBACKOFF:
+		return 0;
+	case Instruction::STARTFALLBACK:
+		return 0;
+	case Instruction::ENDFALLBACK:
+		return 0;
 	case Instruction::ADDRESS:
 		return m_state.address;
 	case Instruction::BALANCE:

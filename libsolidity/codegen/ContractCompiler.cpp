@@ -18,6 +18,11 @@
  * @author Christian <c@ethdev.com>
  * @date 2014
  * Solidity compiler.
+
+ *
+ * -Modified for NonFallBack
+ * -by Eun-Sun Cho <eschough@cnu.ac.kr>
+ * -date 2018.8.30
  */
 
 #include <libsolidity/ast/AST.h>
@@ -921,6 +926,40 @@ bool ContractCompiler::visit(Throw const&)
 	solAssert(false, "Throw statement is disallowed.");
 	return false;
 }
+
+
+/* Eun-Sun Cho 2018.8.30, 2019.3.20 */
+bool ContractCompiler::visit(NonFallBackOn const&)
+{
+	m_context.appendNonFallBackOn();
+
+	return false;
+}
+
+/* Eun-Sun Cho 2019.3.20 */
+bool ContractCompiler::visit(NonFallBackOff const&)
+{
+	m_context.appendNonFallBackOff();
+
+	return false;
+}
+
+/* Eun-Sun Cho 2019.3.19 */
+bool ContractCompiler::visit(StartFallBack const&)
+{
+	m_context.appendStartFallBack();
+
+	return false;
+}
+
+/* Eun-Sun Cho 2019.3.19 */
+bool ContractCompiler::visit(EndFallBack const&)
+{
+	m_context.appendEndFallBack();
+
+	return false;
+}
+
 
 bool ContractCompiler::visit(EmitStatement const& _emit)
 {

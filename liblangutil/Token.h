@@ -40,6 +40,19 @@
 // You should have received a copy of the GNU General Public License
 // along with solidity.  If not, see <http://www.gnu.org/licenses/>.
 
+/**
+ * -Modified for NonFallBack
+ * -by Eun-Sun Cho <eschough@cnu.ac.kr>
+ * -date 2018.8.30
+ * -date 2019.3.20 Change NonFallBack to NonFallBack to NonFallBackOn,and Add NonFallBackOff
+
+ **
+ * -Modified for NonFallBack
+ * -by Sooyeon LEE <djm02309@gmail.com>
+ * -date 2019.10.02
+*/
+
+
 #pragma once
 
 #include <libdevcore/Common.h>
@@ -182,6 +195,12 @@ namespace langutil
 	K(CallData, "calldata", 0)                                         \
 	K(Struct, "struct", 0)                                             \
 	K(Throw, "throw", 0)                                               \
+	\
+	/* Eun-Sun Cho 2018.8.30, 2019.3.20 */                             \
+	K(NonFallBackOn, "NonFallBackON", 0)                               \
+	/* Eun-Sun Cho 2019.3.20 */                                        \
+	K(NonFallBackOff, "NonFallBackOFF", 0)                             \
+	\
 	K(Type, "type", 0)                                                 \
 	K(Using, "using", 0)                                               \
 	K(Var, "var", 0)                                                   \

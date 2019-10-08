@@ -18,6 +18,9 @@
  * @author Christian <c@ethdev.com>
  * @date 2014
  * Solidity parser.
+
+ * Updated by Eun-Sun Cho
+ * for Start Fallback body, End Fallback Body 2019.3.19
  */
 
 #pragma once
@@ -71,6 +74,7 @@ private:
 	struct FunctionHeaderParserResult
 	{
 		bool isConstructor;
+		bool isFallback;	/* Eun-Sun Cho 2019.3.18 */
 		ASTPointer<ASTString> name;
 		ASTPointer<ParameterList> parameters;
 		ASTPointer<ParameterList> returnParameters;
@@ -114,6 +118,7 @@ private:
 		bool _allowEmpty = true
 	);
 	ASTPointer<Block> parseBlock(ASTPointer<ASTString> const& _docString = {});
+	ASTPointer<Block> parseFallbackBlock(ASTPointer<ASTString> const& _docString = {});	/* Eun-Sun Cho 2019.3.18 */
 	ASTPointer<Statement> parseStatement();
 	ASTPointer<InlineAssembly> parseInlineAssembly(ASTPointer<ASTString> const& _docString = {});
 	ASTPointer<IfStatement> parseIfStatement(ASTPointer<ASTString> const& _docString);

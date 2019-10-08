@@ -19,7 +19,14 @@
  *
  * This may (or may not) change in the future. But for the time being, we've put both
  * at a shared place, and *just* import them.
+ */
+
+/**
+ * -Modified for NonFallBack
+ * -by Eun-Sun Cho <eschough@cnu.ac.kr>
+ * -date 2018.8.30
 */
+
 #pragma once
 
 #include <liblangutil/Token.h>

@@ -18,6 +18,12 @@
  * @author Christian <c@ethdev.com>
  * @date 2014
  * Utilities for the solidity compiler.
+ *
+ * -Modified for NonFallBack 
+ * -by Eun-Sun Cho <eschough@cnu.ac.kr>
+ * -date 2018.8.30for NonFallback
+ * -date 2019.3.19 for StartFallback, EndFallback
+ * -date 2019.3.20 for Change NonFallback ->  NonFallbackOn, Add  NonFallbackOff
  */
 
 #include <libsolidity/codegen/CompilerContext.h>
@@ -274,6 +280,28 @@ pair<u256, unsigned> CompilerContext::storageLocationOfVariable(Declaration cons
 	solAssert(it != m_stateVariables.end(), "Variable not found in storage.");
 	return it->second;
 }
+
+/*Eun-Sun Cho 2018.8.30, 2019.3.20 */
+CompilerContext& CompilerContext::appendNonFallBackOn()
+{
+	return *this << Instruction::NONFALLBACKON;
+}
+/*Eun-Sun Cho 2019.3.20 */
+CompilerContext& CompilerContext::appendNonFallBackOff()
+{
+	return *this << Instruction::NONFALLBACKOFF;
+}
+/*Eun-Sun Cho 2019.3.19 */
+CompilerContext& CompilerContext::appendStartFallBack()
+{
+	return *this << Instruction::STARTFALLBACK;
+}
+/*Eun-Sun Cho 2019.3.19 */
+CompilerContext& CompilerContext::appendEndFallBack()
+{
+	return *this << Instruction::ENDFALLBACK;
+}
+
 
 CompilerContext& CompilerContext::appendJump(eth::AssemblyItem::JumpType _jumpType)
 {

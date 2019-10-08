@@ -18,7 +18,15 @@
  * @author Christian <c@ethdev.com>
  * @date 2014
  * Code generator for contracts.
+ **
+ * -Modified for NonFallBack 
+ * -by Eun-Sun Cho <eschough@cnu.ac.kr>
+ * -date 2018.8.30 for NonFallback
+ * 2019.3.19 for StartFallback, EndFallback
+ * 2019.3.20 Change NonFallback to NonFallback On, and AddNonFallback Off
+ *
  */
+
 
 #pragma once
 
@@ -112,6 +120,12 @@ private:
 	bool visit(Return const& _return) override;
 	bool visit(Throw const& _throw) override;
 	bool visit(EmitStatement const& _emit) override;
+	
+	virtual bool visit(NonFallBackOn const& _throw) override; /* Eun-Sun Cho 2018.8.30 2019.3.20*/
+	virtual bool visit(NonFallBackOff const& _throw) override; /* Eun-Sun Cho 2019.3.20 */
+	virtual bool visit(StartFallBack const& _throw) override;/* Eun-Sun Cho 2019.3.19 */
+	virtual bool visit(EndFallBack const& _throw) override;/* Eun-Sun Cho 2019.3.19 */
+
 	bool visit(VariableDeclarationStatement const& _variableDeclarationStatement) override;
 	bool visit(ExpressionStatement const& _expressionStatement) override;
 	bool visit(PlaceholderStatement const&) override;

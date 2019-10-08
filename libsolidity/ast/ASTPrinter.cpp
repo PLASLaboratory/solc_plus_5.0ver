@@ -18,6 +18,13 @@
  * @author Christian <c@ethdev.com>
  * @date 2014
  * Pretty-printer for the abstract syntax tree (the "pretty" is arguable), used for debugging.
+
+ *
+ * -Modified for NonFallBack
+ * -by Eun-Sun Cho <eschough@cnu.ac.kr>
+ * -date 2018.8.30 for NonFallback
+ * -date 2019.3.19 for StartFallback, EndFallback
+ * -date 2019.3.20 for Change NonFallback ->  NonFallbackOn, Add  NonFallbackOff
  */
 
 #include <libsolidity/ast/ASTPrinter.h>
@@ -261,6 +268,39 @@ bool ASTPrinter::visit(Throw const& _node)
 	printSourcePart(_node);
 	return goDeeper();
 }
+
+/* Eun-Sun Cho 2018.8.30 , 2019.3.20*/
+bool ASTPrinter::visit(NonFallBackOn const& _node)
+{
+	writeLine("NonFallBackOn");
+	printSourcePart(_node);
+	return goDeeper();
+}
+
+/* Eun-Sun Cho 2019.3.20 */
+bool ASTPrinter::visit(NonFallBackOff const& _node)
+{
+	writeLine("NonFallBackOff");
+	printSourcePart(_node);
+	return goDeeper();
+}
+
+/* Eun-Sun Cho 2019.3.19 */
+bool ASTPrinter::visit(StartFallBack const& _node)
+{
+	writeLine("StartFallBack");
+	printSourcePart(_node);
+	return goDeeper();
+}
+
+/* Eun-Sun Cho 2019.3.19 */
+bool ASTPrinter::visit(EndFallBack const& _node)
+{
+	writeLine("EndFallBack");
+	printSourcePart(_node);
+	return goDeeper();
+}
+
 
 bool ASTPrinter::visit(EmitStatement const& _node)
 {
@@ -523,6 +563,30 @@ void ASTPrinter::endVisit(Break const&)
 }
 
 void ASTPrinter::endVisit(Return const&)
+{
+	m_indentation--;
+}
+
+/* Eun-Sun Cho 2018.8.30, 2019.3.20 */
+void ASTPrinter::endVisit(NonFallBackOn const&)
+{
+	m_indentation--;
+}
+
+/* Eun-Sun Cho 2019.3.20 */
+void ASTPrinter::endVisit(NonFallBackOff const&)
+{
+	m_indentation--;
+}
+
+/* Eun-Sun Cho 2019.3.19 */
+void ASTPrinter::endVisit(StartFallBack const&)
+{
+	m_indentation--;
+}
+
+/* Eun-Sun Cho 2019.3.19 */
+void ASTPrinter::endVisit(EndFallBack const&)
 {
 	m_indentation--;
 }

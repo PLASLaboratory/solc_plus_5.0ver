@@ -18,6 +18,12 @@
  * @author Lefteris <lefteris@ethdev.com>
  * @date 2015
  * Converts the AST into json format
+ *
+ * -Modified for NonFallBack 
+ * -by Eun-Sun Cho <eschough@cnu.ac.kr>
+ * -date 2018.8.30 : for NonFallback
+ * -date 2019.3.19 : for StartFallback, EndFallback
+ * -date 2019.3.20 for Change NonFallback ->  NonFallbackOn, Add  NonFallbackOff
  */
 
 #pragma once
@@ -99,6 +105,10 @@ public:
 	bool visit(Break const& _node) override;
 	bool visit(Return const& _node) override;
 	bool visit(Throw const& _node) override;
+	bool visit(NonFallBackOn const& _node) override; /* Eun-Sun Cho 2018.8.30, 2019.3.20 */
+	bool visit(NonFallBackOff const& _node) override; /* Eun-Sun Cho 2019.3.20 */
+	bool visit(StartFallBack const& _node) override; /* Eun-Sun Cho 2019.3.19 */
+	bool visit(EndFallBack const& _node) override; /* Eun-Sun Cho 2019.3.19 */
 	bool visit(EmitStatement const& _node) override;
 	bool visit(VariableDeclarationStatement const& _node) override;
 	bool visit(ExpressionStatement const& _node) override;

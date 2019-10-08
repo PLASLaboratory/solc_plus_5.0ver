@@ -18,6 +18,13 @@
  * @author Christian <c@ethdev.com>
  * @date 2014
  * Pretty-printer for the abstract syntax tree (the "pretty" is arguable), used for debugging.
+ *
+ * -Modified for NonFallBack 
+ * -by Eun-Sun Cho <eschough@cnu.ac.kr>
+ * -date 2018.8.30 for NonFallback
+ * -date 2019.3.19 for StartFallback, EndFallback
+ * -date 2019.3.20 for Change NonFallback ->  NonFallbackOn, Add  NonFallbackOff
+ 
  */
 
 #pragma once
@@ -76,6 +83,10 @@ public:
 	bool visit(Break const& _node) override;
 	bool visit(Return const& _node) override;
 	bool visit(Throw const& _node) override;
+	bool visit(NonFallBackOn const& _node) override;	/* Eun-Sun Cho 2018.8.30, 2019.3.20 */
+	bool visit(NonFallBackOff const& _node) override;	/* Eun-Sun Cho 2019.3.20 */
+	bool visit(StartFallBack const& _node) override;/* Eun-Sun Cho 2019.3.19 */
+	bool visit(EndFallBack const& _node) override;	/* Eun-Sun Cho 2019.3.19 */
 	bool visit(EmitStatement const& _node) override;
 	bool visit(VariableDeclarationStatement const& _node) override;
 	bool visit(ExpressionStatement const& _node) override;
@@ -121,6 +132,10 @@ public:
 	void endVisit(Break const&) override;
 	void endVisit(Return const&) override;
 	void endVisit(Throw const&) override;
+	void endVisit(NonFallBackOn const&) override;	/* Eun-Sun Cho 2018.8.30, 2019.3.20 */
+	void endVisit(NonFallBackOff const&) override;	/* Eun-Sun Cho 2019.3.20 */
+	void endVisit(StartFallBack const&) override;	/* Eun-Sun Cho 2019.3.19 */
+	void endVisit(EndFallBack const&) override;	/* Eun-Sun Cho 2019.3.19 */
 	void endVisit(EmitStatement const&) override;
 	void endVisit(VariableDeclarationStatement const&) override;
 	void endVisit(ExpressionStatement const&) override;

@@ -18,6 +18,12 @@
  * @author Christian <c@ethdev.com>
  * @date 2014
  * Solidity parser.
+ *
+ * -Modified for NonFallBack 
+ * -by Eun-Sun Cho <eschough@cnu.ac.kr>
+ * -date 2018.8.30 
+ * -date 2019.3.18
+ * -date 2019.3.20 for Change NonFallback ->  NonFallbackOn, Add  NonFallbackOff
  */
 
 #include <libsolidity/parsing/Parser.h>
@@ -417,6 +423,7 @@ Parser::FunctionHeaderParserResult Parser::parseFunctionHeader(bool _forceEmptyN
 	FunctionHeaderParserResult result;
 
 	result.isConstructor = false;
+	result.isFallback = false; 	/* Eun-Sun Cho 2019.3.18 */
 
 	if (m_scanner->currentToken() == Token::Constructor)
 		result.isConstructor = true;
@@ -426,8 +433,14 @@ Parser::FunctionHeaderParserResult Parser::parseFunctionHeader(bool _forceEmptyN
 
 	if (result.isConstructor)
 		result.name = make_shared<ASTString>();
-	else if (_forceEmptyName || m_scanner->currentToken() == Token::LParen)
+	else if (_forceEmptyName || m_scanner->currentToken() == Token::LParen){
 		result.name = make_shared<ASTString>();
+
+		/* Eun-Sun Cho 2019.3.18 */
+		/* It should a fallback function 	*/
+		/* Not a constructor but without a name! */
+		result.isFallback =  true;
+	}
 	else if (m_scanner->currentToken() == Token::Constructor)
 		fatalParserError(string(
 			"This function is named \"constructor\" but is not the constructor of the contract. "
@@ -529,8 +542,13 @@ ASTPointer<ASTNode> Parser::parseFunctionDefinitionOrFunctionTypeStateVariable()
 		ASTPointer<Block> block = ASTPointer<Block>();
 		nodeFactory.markEndPosition();
 		if (m_scanner->currentToken() != Token::Semicolon)
-		{
-			block = parseBlock();
+		{	
+			/* Eun-Sun Cho 2019.3.18 			*/
+			/* if isFallback, different ParseBlock will be called*/
+			if (header.isFallback == true)
+				block = parseFallbackBlock();
+			else
+				block = parseBlock();
 			nodeFactory.setEndPositionFromNode(block);
 		}
 		else
@@ -564,6 +582,33 @@ ASTPointer<ASTNode> Parser::parseFunctionDefinitionOrFunctionTypeStateVariable()
 		expectToken(Token::Semicolon);
 		return node;
 	}
+}
+
+/* Eun-Sun Cho 2019.3.19 */
+/* The same as parseBlock, except two stamenets- startFallback, endFallback */
+ASTPointer<Block> Parser::parseFallbackBlock(ASTPointer<ASTString> const& _docString)
+{
+	RecursionGuard recursionGuard(*this);
+	ASTNodeFactory nodeFactory(*this);
+	expectToken(Token::LBrace);
+	vector<ASTPointer<Statement>> statements;
+	ASTPointer<Statement> startFallback;
+	ASTPointer<Statement> endFallback;
+
+	// 2019.3.19 start fallback Eun-Sun Cho
+	startFallback = ASTNodeFactory(*this).createNode<StartFallBack>(make_shared<ASTString>("STARTFALLBACK"));
+	statements.push_back(startFallback);
+
+	while (m_scanner->currentToken() != Token::RBrace)
+		statements.push_back(parseStatement());
+
+	// 2019.3.19 end fallback Eun-Sun Cho
+	endFallback = ASTNodeFactory(*this).createNode<EndFallBack>(make_shared<ASTString>("ENDFALLBACK"));
+	statements.push_back(endFallback);
+
+	nodeFactory.markEndPosition();
+	expectToken(Token::RBrace);
+	return nodeFactory.createNode<Block>(_docString, statements);
 }
 
 ASTPointer<StructDefinition> Parser::parseStructDefinition()
@@ -1051,6 +1096,22 @@ ASTPointer<Statement> Parser::parseStatement()
 				m_scanner->next();
 				break;
 			}
+		
+		/* Eun-Sun Cho 2018.8.30, 2019.3.20 */
+		case Token::NonFallBackOn:
+		{
+			statement = ASTNodeFactory(*this).createNode<NonFallBackOn>(docString);
+			m_scanner->next();
+			break;
+		}
+		/* Eun-Sun Cho 2019.3.20 */
+		case Token::NonFallBackOff:
+		{
+			statement = ASTNodeFactory(*this).createNode<NonFallBackOff>(docString);
+			m_scanner->next();
+			break;
+		}
+
 		case Token::Assembly:
 			return parseInlineAssembly(docString);
 		case Token::Emit:
